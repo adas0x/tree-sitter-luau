@@ -431,3 +431,103 @@ end
       (parameter
         (identifier)
         (builtin_type)))))
+
+=================
+Typeof in type position
+=================
+
+local x: typeof(t) = t
+local y: typeof(t)? = nil
+type S = typeof(t)
+type K = keyof<typeof(t)>
+type T = typeof(t)?
+type U = typeof(t) | string
+type F = (typeof(t)) -> typeof(t)
+type O = { a: typeof(t) }
+function f(a: typeof(t)?): typeof(t) return a end
+local z = v :: typeof(t)
+local after = 1
+
+---
+
+(chunk
+  (variable_declaration
+    (assignment_statement
+      (variable_list
+        (identifier)
+        (typeof_type
+          (identifier)))
+      (expression_list
+        (identifier))))
+  (variable_declaration
+    (assignment_statement
+      (variable_list
+        (identifier)
+        (optional_type
+          (typeof_type
+            (identifier))))
+      (expression_list
+        (nil))))
+  (type_definition
+    (identifier)
+    (typeof_type
+      (identifier)))
+  (type_definition
+    (identifier)
+    (generic_type
+      (identifier)
+      (typeof_type
+        (identifier))))
+  (type_definition
+    (identifier)
+    (optional_type
+      (typeof_type
+        (identifier))))
+  (type_definition
+    (identifier)
+    (union_type
+      (typeof_type
+        (identifier))
+      (builtin_type)))
+  (type_definition
+    (identifier)
+    (function_type
+      (typeof_type
+        (identifier))
+      (typeof_type
+        (identifier))))
+  (type_definition
+    (identifier)
+    (object_type
+      (identifier)
+      (typeof_type
+        (identifier))))
+  (function_declaration
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (optional_type
+          (typeof_type
+            (identifier)))))
+    (typeof_type
+      (identifier))
+    (block
+      (return_statement
+        (expression_list
+          (identifier)))))
+  (variable_declaration
+    (assignment_statement
+      (variable_list
+        (identifier))
+      (expression_list
+        (cast_expression
+          (identifier)
+          (typeof_type
+            (identifier))))))
+  (variable_declaration
+    (assignment_statement
+      (variable_list
+        (identifier))
+      (expression_list
+        (number)))))

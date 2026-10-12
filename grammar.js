@@ -184,10 +184,7 @@ module.exports = grammar(lua, {
       field('name', $.identifier),
       optional(field('generic_parameters', $.generic_type_list_with_defaults)),
       '=',
-      choice(
-        $.type,
-        seq('typeof', '(', $.expression, ')'),
-      ),
+      $.type,
     ),
 
     type_function: $ => seq(
@@ -305,7 +302,10 @@ module.exports = grammar(lua, {
       $.optional_type,
       $.literal_type,
       $.variadic_type,
+      $.typeof_type,
     ),
+
+    typeof_type: $ => seq('typeof', '(', $.expression, ')'),
 
     builtin_type: _ => choice(
       'thread',
