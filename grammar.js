@@ -257,9 +257,10 @@ module.exports = grammar(lua, {
 
     declare_member: $ => choice(
       seq(
-        optional(repeat($.attribute)),
+        repeat($.attribute),
         'function',
         field('name', $.identifier),
+        optional($.generic_type_list),
         field('parameters', $.parameters),
         optional(seq(':', $.type)),
       ),
