@@ -316,6 +316,7 @@ declare extern type Instance extends RBXScriptSignal
 	read Name: string
 	Parent: Instance?
 	function FindFirstChild(self, name: string): Instance?
+	function Get<T>(self, key: string): T
 	["UserData"]: buffer
 	[Instance]: number
 end
@@ -343,6 +344,17 @@ end
           (builtin_type)))
       (optional_type
         (identifier)))
+    (declare_member
+      (identifier)
+      (generic_type_list
+        (identifier))
+      (parameters
+        (parameter
+          (identifier))
+        (parameter
+          (identifier)
+          (builtin_type)))
+      (identifier))
     (declare_member
       (object_field_type
         (literal_type
@@ -531,3 +543,33 @@ local after = 1
         (identifier))
       (expression_list
         (number)))))
+
+=================
+Contextual keywords as names
+=================
+
+type T = { read: boolean, write: string; read read: number }
+const = 1
+declare(x)
+
+---
+
+(chunk
+  (type_definition
+    (identifier)
+    (object_type
+      (identifier)
+      (builtin_type)
+      (identifier)
+      (builtin_type)
+      (identifier)
+      (builtin_type)))
+  (assignment_statement
+    (variable_list
+      (identifier))
+    (expression_list
+      (number)))
+  (function_call
+    (identifier)
+    (arguments
+      (identifier))))

@@ -170,6 +170,20 @@ module.exports = grammar(lua, {
       $._attribute_literal,
     ),
 
+    // Luau's const, declare, read and write are contextual: they stay usable as names.
+    variable: $ => choice(
+      $.identifier,
+      alias(choice('const', 'declare'), $.identifier),
+      $.bracket_index_expression,
+      $.dot_index_expression,
+    ),
+
+    _property_name: $ => choice(
+      $.identifier,
+      alias(choice('read', 'write'), $.identifier),
+      $.object_field_type,
+    ),
+
     update_statement: $ => seq(
       alias($._variable_assignment_varlist, $.variable_list),
       choice('+=', '-=', '*=', '/=', '%=', '//=', '^=', '..='),
@@ -243,15 +257,16 @@ module.exports = grammar(lua, {
 
     declare_member: $ => choice(
       seq(
-        optional(repeat($.attribute)),
+        repeat($.attribute),
         'function',
         field('name', $.identifier),
+        optional($.generic_type_list),
         field('parameters', $.parameters),
         optional(seq(':', $.type)),
       ),
       seq(
         optional(field('access_qualifier', choice('read', 'write'))),
-        choice($.identifier, $.object_field_type),
+        $._property_name,
         ':',
         $.type,
       ),
@@ -348,7 +363,7 @@ module.exports = grammar(lua, {
       optional(choice(
         fieldsepSep1(seq(
           optional(field('access_qualifier', choice('read', 'write'))),
-          choice($.identifier, $.object_field_type),
+          $._property_name,
           ':',
           $.type,
         )),
