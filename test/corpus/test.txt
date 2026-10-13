@@ -531,3 +531,33 @@ local after = 1
         (identifier))
       (expression_list
         (number)))))
+
+=================
+Contextual keywords as names
+=================
+
+type T = { read: boolean, write: string; read read: number }
+const = 1
+declare(x)
+
+---
+
+(chunk
+  (type_definition
+    (identifier)
+    (object_type
+      (identifier)
+      (builtin_type)
+      (identifier)
+      (builtin_type)
+      (identifier)
+      (builtin_type)))
+  (assignment_statement
+    (variable_list
+      (identifier))
+    (expression_list
+      (number)))
+  (function_call
+    (identifier)
+    (arguments
+      (identifier))))
