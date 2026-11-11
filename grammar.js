@@ -98,6 +98,11 @@ module.exports = grammar(lua, {
     $.type,
   ]),
 
+  // `(A, b: B` is a tuple's or a function type's list until `)` and `->` decide.
+  conflicts: $ => [
+    [$.tuple_type, $.function_type],
+  ],
+
   rules: {
     // Luau has no goto and label statements, and has continue statements
     statement: ($, original) => choice(
@@ -337,12 +342,16 @@ module.exports = grammar(lua, {
 
     tuple_type: $ => seq('(', commaSep1($.type), ')'),
 
+    // FunctionType ::= ['<' GenericTypeList '>'] '(' [BoundTypeList] ')' '->' ReturnType, where
+    // BoundTypeList ::= [NAME ':'] Type [',' BoundTypeList] | GenericTypePack | VariadicTypePack:
+    // any parameter may be named, in any order, and a pack (a Type here) may close the list.
     function_type: $ => prec.right(seq(
+      optional($.generic_type_list),
       '(',
-      choice(
-        seq(commaSep(seq($.identifier, ':', $.type)), optional(seq(',', commaSep($.type)))),
-        commaSep($.type),
-      ),
+      commaSep(choice(
+        seq($.identifier, ':', $.type),
+        $.type,
+      )),
       ')',
       '->',
       $.type,
