@@ -2047,6 +2047,24 @@
           "name": "identifier"
         },
         {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "const"
+              },
+              {
+                "type": "STRING",
+                "value": "declare"
+              }
+            ]
+          },
+          "named": true,
+          "value": "identifier"
+        },
+        {
           "type": "SYMBOL",
           "name": "bracket_index_expression"
         },
@@ -3325,6 +3343,37 @@
         }
       ]
     },
+    "_property_name": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "read"
+              },
+              {
+                "type": "STRING",
+                "value": "write"
+              }
+            ]
+          },
+          "named": true,
+          "value": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "object_field_type"
+        }
+      ]
+    },
     "update_statement": {
       "type": "SEQ",
       "members": [
@@ -3826,19 +3875,11 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "attribute"
-                  }
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "attribute"
+              }
             },
             {
               "type": "STRING",
@@ -3851,6 +3892,18 @@
                 "type": "SYMBOL",
                 "name": "identifier"
               }
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "generic_type_list"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "FIELD",
@@ -3912,17 +3965,8 @@
               ]
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "identifier"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "object_field_type"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_property_name"
             },
             {
               "type": "STRING",
@@ -4516,17 +4560,8 @@
                           ]
                         },
                         {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "SYMBOL",
-                              "name": "identifier"
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "object_field_type"
-                            }
-                          ]
+                          "type": "SYMBOL",
+                          "name": "_property_name"
                         },
                         {
                           "type": "STRING",
@@ -4585,17 +4620,8 @@
                                 ]
                               },
                               {
-                                "type": "CHOICE",
-                                "members": [
-                                  {
-                                    "type": "SYMBOL",
-                                    "name": "identifier"
-                                  },
-                                  {
-                                    "type": "SYMBOL",
-                                    "name": "object_field_type"
-                                  }
-                                ]
+                                "type": "SYMBOL",
+                                "name": "_property_name"
                               },
                               {
                                 "type": "STRING",

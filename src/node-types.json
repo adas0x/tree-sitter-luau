@@ -594,6 +594,10 @@
           "named": true
         },
         {
+          "type": "generic_type_list",
+          "named": true
+        },
+        {
           "type": "object_field_type",
           "named": true
         },
